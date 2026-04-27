@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: presencehub-redis
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+
+  presence-service:
+    build: ./presence-service
+    container_name: presencehub-service
+    ports:
+      - '4000:4000'
+    environment:
+      PORT: 4000
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      LOG_LEVEL: debug
+      STALE_TIMEOUT_MS: 900000
+      CLEANUP_INTERVAL_MS: 300000
+      CORS_ORIGIN: http://localhost:5173
+    depends_on:
+      - redis
+    restart: unless-stopped
+
+volumes:
+  redis_data:
