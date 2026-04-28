@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PresenceHub — Presentation</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css" />
+  <style>
+    :root {
+      --blue: #1e40af;
+      --lightblue: #eff6ff;
+      --green: #059669;
+      --yellow: #f59e0b;
+      --gray: #6b7280;
+      --dark: #111827;
+    }
+    .reveal { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+    .reveal h1 { color: var(--blue); font-size: 2em; }
+    .reveal h2 { color: var(--blue); font-size: 1.4em; border-bottom: 3px solid var(--yellow); padding-bottom: 8px; }
+    .reveal h3 { color: var(--dark); font-size: 1.1em; }
+    .reveal p, .reveal li { color: #374151; font-size: 0.82em; line-height: 1.7; }
+    .reveal pre { font-size: 0.55em; background: #1e293b; border-radius: 8px; }
+    .reveal code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; color: #be185d; font-size: 0.9em; }
+    .reveal pre code { background: transparent; color: #e2e8f0; padding: 0; }
+
+    .tag { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 0.65em; font-weight: 700; }
+    .tag-blue { background: #dbeafe; color: #1e40af; }
+    .tag-green { background: #dcfce7; color: #166534; }
+    .tag-yellow { background: #fef9c3; color: #854d0e; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+    .card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 16px 20px;
+      text-align: left;
+    }
+    .card h3 { margin-bottom: 8px; color: var(--blue); font-size: 0.95em; }
+    .card p, .card li { font-size: 0.72em; color: #4b5563; }
+
+    .highlight-box {
+      background: var(--lightblue);
+      border-left: 4px solid var(--blue);
+      border-radius: 6px;
+      padding: 14px 18px;
+      margin: 10px 0;
+      text-align: left;
+    }
+    .highlight-box p { font-size: 0.78em; margin: 0; color: #1e40af; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 0.7em; }
+    th { background: var(--blue); color: #fff; padding: 8px 12px; text-align: left; }
+    td { padding: 7px 12px; border-bottom: 1px solid #e5e7eb; color: #374151; }
+    tr:nth-child(even) td { background: #f9fafb; }
+
+    .flow-box {
+      background: #1e293b;
+      border-radius: 10px;
+      padding: 16px 20px;
+      font-family: monospace;
+      font-size: 0.58em;
+      color: #e2e8f0;
+      text-align: left;
+      white-space: pre;
+      line-height: 1.6;
+    }
+    .flow-comment { color: #94a3b8; }
+    .flow-action { color: #86efac; }
+    .flow-arrow { color: #fbbf24; }
+    .flow-label { color: #7dd3fc; }
+
+    .subtitle { color: var(--gray); font-size: 0.85em; margin-top: 8px; }
+    .big-number { font-size: 2.5em; font-weight: 800; color: var(--blue); }
+    .metric-label { font-size: 0.7em; color: var(--gray); }
+
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 10px;
+      text-align: left;
+    }
+    .step-num {
+      min-width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75em;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .step p { margin: 0; font-size: 0.76em; color: #374151; line-height: 1.5; }
+
+    .reveal section { padding: 20px 40px; }
+    .reveal .slides section {
+      overflow-y: auto !important;
+      max-height: 90vh;
+    }
+    .title-slide { background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%); }
+    .title-slide h1 { color: #fff !important; font-size: 2.4em; }
+    .title-slide p { color: #bfdbfe !important; }
+  </style>
+</head>
+<body>
+<div class="reveal">
+  <div class="slides">
+
+    <!-- SLIDE 1: Title -->
+    <section class="title-slide" data-background-color="#1e40af">
+      <h1 style="color:#fff; border:none;">PresenceHub</h1>
+      <p style="color:#bfdbfe; font-size:1em; margin-top:10px;">Real-time presence awareness for CSR workspaces</p>
+      <br/>
+      <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+        <span class="tag tag-green">Node.js + Express</span>
+        <span class="tag tag-blue">Server-Sent Events</span>
+        <span class="tag tag-yellow">Redis Pub/Sub</span>
+        <span class="tag tag-green">React</span>
+        <span class="tag tag-blue">Docker</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 2: Problem -->
+    <section>
+      <h2>The Problem</h2>
+      <div style="margin-top:20px;">
+        <div class="card">
+          <h3>What We Are Solving</h3>
+          <ul>
+            <li>CSRs work on vehicle units called <strong>lots</strong> in the existing UI app</li>
+            <li>Multiple CSRs can open the same lot simultaneously with no awareness of each other</li>
+            <li>No indication on the home page when a lot is already being worked on</li>
+            <li>No indication on the lot detail page of who else is currently viewing it</li>
+            <li>Leads to duplicate work, wasted effort, and coordination gaps</li>
+            <li>Need a solution that works across <strong>multiple UI apps</strong> in the company — not just this one</li>
+          </ul>
+        </div>
+      </div>
+      <div class="highlight-box" style="margin-top:16px;">
+        <p>Presence is <strong>informational only</strong> — any CSR can still open and work on any lot. This is a coordination aid, not a lock.</p>
+      </div>
+    </section>
+
+    <!-- SLIDE 3: Solution Overview -->
+    <section>
+      <h2>Solution — PresenceHub</h2>
+      <div class="grid-3" style="margin-top:20px;">
+        <div class="card">
+          <h3>Standalone Microservice</h3>
+          <p>Built in Node.js — decoupled from the existing Java backend. Can be reused by any UI app in the company.</p>
+        </div>
+        <div class="card">
+          <h3>Server-Sent Events</h3>
+          <p>Server pushes presence updates to all connected browsers in real time over a persistent HTTP connection.</p>
+        </div>
+        <div class="card">
+          <h3>Redis Pub/Sub</h3>
+          <p>Shared message bus across multiple server instances. Any instance can publish, all instances receive and fan out.</p>
+        </div>
+      </div>
+      <br/>
+      <div class="flow-box">
+<span class="flow-label">React UI (existing)</span>
+     |  SSE — receive updates (persistent connection)
+     |  REST — send actions (enter / leave / heartbeat)
+     ▼
+<span class="flow-label">PresenceHub Microservice</span>  (Node.js + Express)
+     |  State + Pub/Sub
+     ▼
+<span class="flow-label">Redis</span>  (bundled, swappable to central Redis later)</div>
+    </section>
+
+    <!-- SLIDE 4: What are SSE -->
+    <section>
+      <h2>What Are Server-Sent Events?</h2>
+      <p>SSE is a browser technology that lets a server <strong>push data to a client over a single long-lived HTTP connection</strong>. The client opens it once — the server sends messages anytime.</p>
+      <div class="flow-box" style="margin-top:14px;">
+<span class="flow-label">Browser</span>                         <span class="flow-label">Server</span>
+  |                                  |
+  |----GET /presence/stream--------->|  <span class="flow-comment">(connection stays open forever)</span>
+  |                                  |
+  |&lt;---data: presence_update---------|  <span class="flow-action">server pushes whenever state changes</span>
+  |&lt;---data: presence_update---------|
+  |&lt;---: keep-alive every 30s--------|  <span class="flow-comment">(prevents proxy timeouts)</span>
+  |                                  |
+  |  <span class="flow-comment">connection drops (network blip)</span>   |
+  |----reconnects automatically----->|  <span class="flow-action">EventSource built-in reconnect</span></div>
+    </section>
+
+    <!-- SLIDE 5: SSE vs others -->
+    <section>
+      <h2>SSE vs WebSockets vs Polling</h2>
+      <table style="margin-top:16px;">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>SSE ✅</th>
+            <th>WebSockets</th>
+            <th>Polling</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Direction</td><td>Server → Client</td><td>Bi-directional</td><td>Client → Server</td></tr>
+          <tr><td>Protocol</td><td>Plain HTTP</td><td>Separate WS protocol</td><td>Plain HTTP</td></tr>
+          <tr><td>Auto-reconnect</td><td>Yes — built in</td><td>No — manual</td><td>N/A</td></tr>
+          <tr><td>Complexity</td><td>Low</td><td>Medium–High</td><td>Low</td></tr>
+          <tr><td>Proxy / Firewall</td><td>Works everywhere</td><td>Can be blocked</td><td>Works everywhere</td></tr>
+          <tr><td>Overhead</td><td>Low</td><td>Low</td><td>High (repeated requests)</td></tr>
+          <tr><td>HTTP/2 support</td><td>Yes — multiplexed</td><td>No</td><td>Yes</td></tr>
+        </tbody>
+      </table>
+      <div class="highlight-box" style="margin-top:14px;">
+        <p>SSE is the right fit here because presence data only flows <strong>server → client</strong>. Client actions (enter/leave) are infrequent REST calls — no need for bi-directional WebSockets.</p>
+      </div>
+    </section>
+
+    <!-- SLIDE 6: Two connections -->
+    <section>
+      <h2>Two Connections, Not One</h2>
+      <p>SSE feels bi-directional but it's actually two separate connections stitched together via Redis.</p>
+      <div class="flow-box" style="margin-top:14px;">
+<span class="flow-label">Browser</span>                <span class="flow-label">PresenceHub Server</span>         <span class="flow-label">Other Browsers</span>
+  |                          |                              |
+  |---GET /presence/stream-->|  <span class="flow-comment">SSE — stays open forever</span>       |
+  |                          |                              |
+  |---POST /presence/enter-->|                              |
+  |                   <span class="flow-action">writes to Redis</span>                       |
+  |                   <span class="flow-action">redis.publish()</span>                       |
+  |                          |                              |
+  |              <span class="flow-action">Redis subscriber fires on all instances</span>     |
+  |                          |                              |
+  |&lt;--SSE presence_update----|---SSE presence_update------->|
+  |                          |                              |</div>
+      <div class="grid-2" style="margin-top:14px;">
+        <div class="card"><h3>Connection 1 — SSE</h3><p>Long-lived. Server → Client. Stays open. Delivers real-time updates.</p></div>
+        <div class="card"><h3>Connection 2 — REST</h3><p>Short-lived. Client → Server. Opens, sends data, closes. Used for enter / leave / heartbeat.</p></div>
+      </div>
+    </section>
+
+    <!-- SLIDE 7: Flow — User Enters -->
+    <section>
+      <h2>Flow: User Enters a Lot</h2>
+      <div class="flow-box" style="margin-top:16px;">
+<span class="flow-label">User 1 (Tab)</span>      <span class="flow-label">PresenceHub</span>         <span class="flow-label">Redis</span>        <span class="flow-label">User 2 (Tab)</span>
+     |                    |                   |                 |
+     | <span class="flow-action">Opens Lot #1005</span>      |                   |                 |
+     |                    |                   |                 |
+     |--POST /enter------->|                   |                 |
+     |  { lotId,          |                   |                 |
+     |    userEmail }     |                   |                 |
+     |                    |--HSET lot:1005---->|                 |
+     |                    |  { email,         |                 |
+     |                    |    lastSeen }     |                 |
+     |                    |--PUBLISH--------->|                 |
+     |                    |  { lotId, users } |                 |
+     |                    |&lt;--subscriber------|                 |
+     |                    |                   |                 |
+     |&lt;--SSE update--------|---SSE update----------------------->|
+     |                    |                   |   <span class="flow-action">Badge appears on Lot #1005</span>
+     |&lt;--200 OK------------|                   |                 |</div>
+    </section>
+
+    <!-- SLIDE 8: Flow — User Leaves Gracefully -->
+    <section>
+      <h2>Flow: User Leaves Gracefully</h2>
+      <p style="font-size:0.75em; color:var(--gray);">Navigates away, clicks back, or closes tab — <code>beforeunload</code> fires <code>sendBeacon</code></p>
+      <div class="flow-box" style="margin-top:10px;">
+<span class="flow-label">User 1 (Tab)</span>      <span class="flow-label">PresenceHub</span>         <span class="flow-label">Redis</span>        <span class="flow-label">User 2 (Tab)</span>
+     |                    |                   |                 |
+     | <span class="flow-action">Navigates away</span>      |                   |                 |
+     | <span class="flow-comment">component unmounts</span>  |                   |                 |
+     |                    |                   |                 |
+     |--POST /leave------->|                   |                 |
+     |  { lotId,          |                   |                 |
+     |    userEmail }     |                   |                 |
+     |                    |--HDEL lot:1005---->|                 |
+     |                    |  <span class="flow-comment">(removes session)</span> |                 |
+     |                    |--PUBLISH--------->|                 |
+     |                    |  { lotId,         |                 |
+     |                    |    users: [] }    |                 |
+     |                    |&lt;--subscriber------|                 |
+     |                    |                   |                 |
+     |&lt;--SSE update--------|---SSE update----------------------->|
+     |                    |                   |   <span class="flow-action">Badge removed from Lot #1005</span>
+     |                    |                   |   <span class="flow-action">Near-zero delay</span></div>
+    </section>
+
+    <!-- SLIDE 9: Flow — Ungraceful + Heartbeat -->
+    <section>
+      <h2>Flow: Ungraceful Exit + Heartbeat</h2>
+      <div class="grid-2" style="margin-top:14px;">
+        <div>
+          <p style="font-size:0.72em; font-weight:700; color:var(--blue);">Tab Crash / Network Drop</p>
+          <div class="flow-box" style="font-size:0.52em;">
+<span class="flow-label">User 1</span>       <span class="flow-label">PresenceHub</span>      <span class="flow-label">Redis</span>
+  |               |                |
+  | <span class="flow-comment">Tab crashes</span>   |                |
+  | x  x  x  x   |                |
+  |               |                |
+  | <span class="flow-comment">(heartbeats stop)</span>            |
+  |               |                |
+  | [3 min]       |                |
+  | [6 min] ...   |                |
+  |               |                |
+  | [15 min — <span class="flow-action">cleanup job</span>]         |
+  |               |--HGETALL------>|
+  |               | lastSeen       |
+  |               | &gt; 15 min?      |
+  |               | <span class="flow-action">YES → HDEL</span>    |
+  |               |--PUBLISH------>|
+  |               |&lt;--subscriber--|
+  |               |                |
+  |  <span class="flow-action">SSE update sent to all clients</span></div>
+        </div>
+        <div>
+          <p style="font-size:0.72em; font-weight:700; color:var(--blue);">Heartbeat Keep-Alive</p>
+          <div class="flow-box" style="font-size:0.52em;">
+<span class="flow-label">User 1</span>       <span class="flow-label">PresenceHub</span>      <span class="flow-label">Redis</span>
+  |               |                |
+  | <span class="flow-action">Tab visible</span>   |                |
+  |               |                |
+  | [every 3 min] |                |
+  |--POST /-------->|                |
+  |  heartbeat    |--HSET--------->|
+  |               | <span class="flow-action">updates lastSeen</span>|
+  |&lt;--200 OK------|                |
+  |               |                |
+  | <span class="flow-comment">Tab hidden</span>    |                |
+  | <span class="flow-comment">heartbeats stop</span>              |
+  |               |  <span class="flow-comment">lastSeen freezes</span>
+  |               |  <span class="flow-comment">cleanup fires</span>
+  |               |  <span class="flow-comment">after 15 min</span>  |
+  |               |                |
+  | <span class="flow-action">Tab comes back</span> |                |
+  |--POST /enter-->|                |
+  | <span class="flow-action">re-registered</span>  |                |</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 10: Redis Multi-instance -->
+    <section>
+      <h2>Why Redis? Multi-Instance Problem</h2>
+      <p>Multiple Node.js server instances can't share in-memory state. Redis is the shared message bus.</p>
+      <div class="flow-box" style="margin-top:14px;">
+<span class="flow-label">User A</span>          <span class="flow-label">Instance 1</span>         <span class="flow-label">Redis</span>          <span class="flow-label">Instance 2</span>         <span class="flow-label">User B / C</span>
+  |                   |                   |                  |                   |
+  |--POST /enter------>|                   |                  |                   |
+  |              <span class="flow-action">writes to Redis</span>                                        |
+  |              <span class="flow-action">redis.publish()</span>                                        |
+  |                   |                   |                  |                   |
+  |                   |&lt;--pub/sub---------|--pub/sub-------->|                   |
+  |                   |                   |                  |                   |
+  |&lt;--SSE update------|                   |                  |---SSE update------>|
+  |  <span class="flow-comment">(clients on instance 1)</span>               <span class="flow-comment">(clients on instance 2)</span></div>
+      <div class="highlight-box" style="margin-top:14px;">
+        <p>Each instance holds its own in-memory Set of SSE connections. Redis delivers the publish to <strong>all instances</strong>. Each instance fans out to its own clients. Every tab — on any instance — gets the update.</p>
+      </div>
+    </section>
+
+    <!-- SLIDE 11: API Reference -->
+    <section>
+      <h2>API Reference</h2>
+      <table style="margin-top:16px;">
+        <thead>
+          <tr><th>Method</th><th>Endpoint</th><th>Purpose</th><th>Triggered By</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>POST</td><td>/presence/enter</td><td>User opens a lot</td><td>Component mount / tab visible</td></tr>
+          <tr><td>POST</td><td>/presence/leave</td><td>User leaves a lot</td><td>Unmount / beforeunload</td></tr>
+          <tr><td>POST</td><td>/presence/heartbeat</td><td>Keep-alive ping</td><td>Every 3 min (tab visible only)</td></tr>
+          <tr><td>GET</td><td>/presence/lots?lotIds=...</td><td>Batch fetch presence</td><td>Page load / pagination</td></tr>
+          <tr><td>GET</td><td>/presence/lot/:lotId</td><td>Single lot presence</td><td>Lot detail page mount</td></tr>
+          <tr><td>GET</td><td>/presence/stream</td><td>SSE stream</td><td>App startup (stays open)</td></tr>
+          <tr><td>GET</td><td>/health</td><td>Health check</td><td>Load balancer / monitoring</td></tr>
+        </tbody>
+      </table>
+      <div class="highlight-box" style="margin-top:12px;">
+        <p>All requests include <code>X-Correlation-ID</code> header — used for tracing across Java backend, PresenceHub, and frontend logs.</p>
+      </div>
+    </section>
+
+    <!-- SLIDE 12: Heartbeat Strategy -->
+    <section>
+      <h2>Heartbeat &amp; Stale Session Strategy</h2>
+      <div class="grid-3" style="margin-top:16px;">
+        <div class="card" style="text-align:center;">
+          <div class="big-number">3 min</div>
+          <div class="metric-label">Heartbeat interval<br/>(tab visible only)</div>
+        </div>
+        <div class="card" style="text-align:center;">
+          <div class="big-number">15 min</div>
+          <div class="metric-label">Stale timeout<br/>(no heartbeat = gone)</div>
+        </div>
+        <div class="card" style="text-align:center;">
+          <div class="big-number">5 min</div>
+          <div class="metric-label">Cleanup job interval<br/>(scans Redis)</div>
+        </div>
+      </div>
+      <br/>
+      <table>
+        <thead><tr><th>Scenario</th><th>Delay</th></tr></thead>
+        <tbody>
+          <tr><td>Graceful leave / navigate away</td><td>Near zero</td></tr>
+          <tr><td>Tab / browser close</td><td>Near zero (sendBeacon)</td></tr>
+          <tr><td>Tab backgrounded</td><td>Up to 15 min</td></tr>
+          <tr><td>Network drop / crash</td><td>Up to 15 min</td></tr>
+          <tr><td>User returns to tab</td><td>Immediate</td></tr>
+          <tr><td>Multiple tabs, different lots</td><td>Each tracked independently</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- SLIDE 13: Frontend Integration -->
+    <section>
+      <h2>Frontend Integration</h2>
+      <p>No new React app needed. Three files to drop into the existing app.</p>
+      <div class="grid-3" style="margin-top:16px;">
+        <div class="card">
+          <h3>usePresence.js</h3>
+          <p>Hook — manages enter/leave/heartbeat/SSE. Handles Page Visibility API and sendBeacon on close.</p>
+        </div>
+        <div class="card">
+          <h3>LotPresenceBadge</h3>
+          <p>Home page — shows avatar initials + "N viewing" next to each lot. Updates live via SSE.</p>
+        </div>
+        <div class="card">
+          <h3>LotPresenceBanner</h3>
+          <p>Lot detail page — "Also viewing: a@x.com, b@x.com" banner. Auto-registers presence on mount.</p>
+        </div>
+      </div>
+      <div class="flow-box" style="margin-top:16px; font-size:0.6em;">
+<span class="flow-comment">// App root — one SSE connection for the whole app</span>
+<span class="flow-action">createSSEConnection</span>(({ lotId, users }) =&gt; setPresenceMap(...));
+
+<span class="flow-comment">// Home page</span>
+&lt;<span class="flow-label">LotPresenceBadge</span> users={presenceMap[lot.id] ?? []} /&gt;
+
+<span class="flow-comment">// Lot detail page</span>
+&lt;<span class="flow-label">LotPresenceBanner</span> lotId={lotId} userEmail={currentUserEmail} presenceMap={presenceMap} /&gt;</div>
+    </section>
+
+    <!-- SLIDE 14: Project Structure -->
+    <section>
+      <h2>Project Structure</h2>
+      <div class="grid-2" style="margin-top:16px;">
+        <div>
+          <p style="font-size:0.72em; font-weight:700; color:var(--blue);">presence-service/</p>
+          <div class="flow-box" style="font-size:0.58em;">
+src/
+├── index.js          <span class="flow-comment">Entry point, cleanup job</span>
+├── routes/
+│   ├── presence.js   <span class="flow-comment">POST enter/leave/heartbeat</span>
+│   │                 <span class="flow-comment">GET lots / lot/:id</span>
+│   └── stream.js     <span class="flow-comment">GET /stream (SSE)</span>
+├── redis/
+│   └── client.js     <span class="flow-comment">Redis helpers + pub/sub</span>
+└── utils/
+    └── logger.js     <span class="flow-comment">Winston structured logs</span>
+
+Dockerfile
+docker-compose.yml    <span class="flow-comment">Node + Redis</span>
+.env</div>
+        </div>
+        <div>
+          <p style="font-size:0.72em; font-weight:700; color:var(--blue);">poc-ui/</p>
+          <div class="flow-box" style="font-size:0.58em;">
+src/
+├── App.jsx            <span class="flow-comment">SSE connection + routing</span>
+├── hooks/
+│   └── usePresence.js <span class="flow-comment">All presence logic</span>
+└── components/
+    ├── LoginBar.jsx   <span class="flow-comment">Simulate different users</span>
+    ├── LotList.jsx    <span class="flow-comment">Paginated lot grid</span>
+    ├── LotCard.jsx    <span class="flow-comment">Lot tile + badge</span>
+    ├── LotDetail.jsx  <span class="flow-comment">Lot detail page</span>
+    ├── LotPresenceBadge.jsx
+    └── LotPresenceBanner.jsx
+
+.env
+vite.config.js</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 15: Running the POC -->
+    <section>
+      <h2>Running the POC</h2>
+      <div class="grid-2" style="margin-top:16px;">
+        <div class="card">
+          <h3>Option 1 — Docker (recommended)</h3>
+          <div class="flow-box" style="font-size:0.6em; margin-top:8px;">
+<span class="flow-comment"># Terminal 1 — Redis + Presence Service</span>
+<span class="flow-action">docker-compose up --build</span>
+
+<span class="flow-comment"># Terminal 2 — POC UI</span>
+cd poc-ui
+npm install
+<span class="flow-action">npm run dev</span></div>
+        </div>
+        <div class="card">
+          <h3>Option 2 — Local</h3>
+          <div class="flow-box" style="font-size:0.6em; margin-top:8px;">
+<span class="flow-comment"># Start Redis</span>
+brew install redis
+brew services start redis
+
+<span class="flow-comment"># Presence Service</span>
+cd presence-service
+npm install && <span class="flow-action">npm run dev</span>
+
+<span class="flow-comment"># POC UI</span>
+cd poc-ui
+npm install && <span class="flow-action">npm run dev</span></div>
+        </div>
+      </div>
+      <div class="highlight-box" style="margin-top:16px;">
+        <p>Open <strong>http://localhost:5173</strong> — enter different emails in multiple tabs to simulate different users and watch presence update in real time.</p>
+      </div>
+    </section>
+
+    <!-- SLIDE 16: Future -->
+    <section>
+      <h2>Future Considerations</h2>
+      <div class="grid-2" style="margin-top:20px;">
+        <div>
+          <div class="step">
+            <div class="step-num">1</div>
+            <p><strong>Central Redis</strong> — swap bundled Redis for the DevOps-managed central Redis. One env variable change.</p>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <p><strong>Extend to other apps</strong> — same microservice, same React components. Any UI app in the company can plug in.</p>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <p><strong>Scoped SSE subscriptions</strong> — filter events by visible lot IDs on the server to reduce fan-out at large scale.</p>
+          </div>
+        </div>
+        <div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <p><strong>Presence history</strong> — log who worked on a lot and when, for audit purposes.</p>
+          </div>
+          <div class="step">
+            <div class="step-num">5</div>
+            <p><strong>Notifications</strong> — alert a user if someone else starts viewing the lot they are working on.</p>
+          </div>
+          <div class="step">
+            <div class="step-num">6</div>
+            <p><strong>Exclusive lock mode</strong> — optionally prevent two users from editing the same lot simultaneously.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 17: Summary -->
+    <section data-background-color="#1e40af">
+      <h2 style="color:#fff; border-color:#f59e0b;">Summary</h2>
+      <div class="grid-2" style="margin-top:20px;">
+        <div class="card" style="background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.2);">
+          <h3 style="color:#bfdbfe;">What We Built</h3>
+          <ul>
+            <li style="color:#e0f2fe;">Standalone Node.js presence microservice</li>
+            <li style="color:#e0f2fe;">SSE + REST hybrid — simple and reliable</li>
+            <li style="color:#e0f2fe;">Redis pub/sub for multi-instance support</li>
+            <li style="color:#e0f2fe;">React POC UI to demo the full flow</li>
+            <li style="color:#e0f2fe;">Docker setup — one command to run</li>
+          </ul>
+        </div>
+        <div class="card" style="background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.2);">
+          <h3 style="color:#bfdbfe;">Key Design Decisions</h3>
+          <ul>
+            <li style="color:#e0f2fe;">SSE over WebSockets — presence is one-way</li>
+            <li style="color:#e0f2fe;">15 min stale timeout — buffer for idle tabs</li>
+            <li style="color:#e0f2fe;">sendBeacon — reliable on tab close</li>
+            <li style="color:#e0f2fe;">Page Visibility API — no ghost presence</li>
+            <li style="color:#e0f2fe;">correlationId — full request traceability</li>
+          </ul>
+        </div>
+      </div>
+      <p style="color:#bfdbfe; margin-top:24px; font-size:0.8em;">github.com/premcopart1/Presence-Hub</p>
+    </section>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    slideNumber: 'c/t',
+    transition: 'slide',
+    transitionSpeed: 'fast',
+    controls: true,
+    progress: true,
+    center: false,
+    width: 1100,
+    height: 650,
+    margin: 0.04,
+    scrollActivationWidth: null,
+    overflow: 'scroll'
+  });
+</script>
+</body>
+</html>

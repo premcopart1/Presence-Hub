@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const { connect, cleanupStaleSessions } = require('./redis/client');
+const { cleanupStaleSessions } = require('./redis/client');
 const presenceRoutes = require('./routes/presence');
 const streamRoutes = require('./routes/stream');
 const logger = require('./utils/logger');
@@ -28,23 +28,15 @@ app.use((err, req, res, next) => {
 });
 
 async function start() {
-  try {
-    await connect();
-    logger.info('Redis connected');
+  // Stale session cleanup job
+  setInterval(async () => {
+    logger.debug('Running stale session cleanup');
+    await cleanupStaleSessions();
+  }, CLEANUP_INTERVAL_MS);
 
-    // Stale session cleanup job
-    setInterval(async () => {
-      logger.debug('Running stale session cleanup');
-      await cleanupStaleSessions();
-    }, CLEANUP_INTERVAL_MS);
-
-    app.listen(PORT, () => {
-      logger.info(`PresenceHub service started`, { port: PORT });
-    });
-  } catch (err) {
-    logger.error('Failed to start server', { error: err.message });
-    process.exit(1);
-  }
+  app.listen(PORT, () => {
+    logger.info(`PresenceHub service started`, { port: PORT });
+  });
 }
 
 start();

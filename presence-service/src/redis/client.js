@@ -6,14 +6,12 @@ const STALE_TIMEOUT_MS = parseInt(process.env.STALE_TIMEOUT_MS) || 900000; // 15
 // Two clients — one for commands, one for pub/sub
 const redis = new Redis({
   host: process.env.REDIS_HOST || 'localhost',
-  port: parseInt(process.env.REDIS_PORT) || 6379,
-  lazyConnect: true
+  port: parseInt(process.env.REDIS_PORT) || 6379
 });
 
 const subscriber = new Redis({
   host: process.env.REDIS_HOST || 'localhost',
-  port: parseInt(process.env.REDIS_PORT) || 6379,
-  lazyConnect: true
+  port: parseInt(process.env.REDIS_PORT) || 6379
 });
 
 redis.on('connect', () => logger.info('Redis client connected'));
@@ -107,11 +105,6 @@ async function cleanupStaleSessions() {
   if (cleaned > 0) logger.info(`Cleanup complete`, { sessionsRemoved: cleaned });
 }
 
-async function connect() {
-  await redis.connect();
-  await subscriber.connect();
-}
-
 module.exports = {
   redis,
   subscriber,
@@ -121,6 +114,5 @@ module.exports = {
   heartbeat,
   getLotUsers,
   getLotsPresence,
-  cleanupStaleSessions,
-  connect
+  cleanupStaleSessions
 };
