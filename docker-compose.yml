@@ -23,6 +23,8 @@ services:
       STALE_TIMEOUT_MS: 900000
       CLEANUP_INTERVAL_MS: 300000
       CORS_ORIGIN: http://localhost:5173
+    volumes:
+      - ./presence-service/src:/app/src
     depends_on:
       - redis
     restart: unless-stopped
