@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import LoginBar from './components/LoginBar';
 import LotList from './components/LotList';
 import LotDetail from './components/LotDetail';
@@ -36,24 +37,22 @@ function generateLots(count = 50) {
 const LOTS = generateLots(50);
 
 export default function App() {
-  const [userEmail, setUserEmail] = useState('');
-  const [selectedLot, setSelectedLot] = useState(null);
-  const [presenceMap, setPresenceMap] = useState({}); // { lotId: [{ userEmail, ... }] }
+  const [userEmail, setUserEmail] = useState(() => localStorage.getItem('presenceEmail') ?? '');
+  const [presenceMap, setPresenceMap] = useState({});
 
-  // Update presence map on SSE events
   const handlePresenceUpdate = useCallback(({ lotId, users }) => {
     setPresenceMap((prev) => ({ ...prev, [String(lotId)]: users }));
   }, []);
 
-  // Single SSE connection for the whole app
   useEffect(() => {
     const es = createSSEConnection(handlePresenceUpdate);
     return () => es.close();
   }, [handlePresenceUpdate]);
 
   function handleSetEmail(email) {
+    if (email) localStorage.setItem('presenceEmail', email);
+    else localStorage.removeItem('presenceEmail');
     setUserEmail(email);
-    setSelectedLot(null);
   }
 
   return (
@@ -70,22 +69,18 @@ export default function App() {
             </p>
           </div>
         </div>
-      ) : selectedLot ? (
-        <div style={styles.page}>
-          <LotDetail
-            lot={selectedLot}
-            userEmail={userEmail}
-            presenceMap={presenceMap}
-            onBack={() => setSelectedLot(null)}
-          />
-        </div>
       ) : (
         <div style={styles.page}>
-          <LotList
-            lots={LOTS}
-            presenceMap={presenceMap}
-            onSelectLot={setSelectedLot}
-          />
+          <Routes>
+            <Route
+              path="/"
+              element={<LotList lots={LOTS} presenceMap={presenceMap} />}
+            />
+            <Route
+              path="/lot/:lotId"
+              element={<LotDetail lots={LOTS} userEmail={userEmail} presenceMap={presenceMap} />}
+            />
+          </Routes>
         </div>
       )}
     </div>

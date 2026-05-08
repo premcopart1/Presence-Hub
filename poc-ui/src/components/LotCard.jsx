@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import LotPresenceBadge from './LotPresenceBadge';
 
 const STATUS_COLORS = {
@@ -7,14 +8,15 @@ const STATUS_COLORS = {
   Closed: { bg: '#fee2e2', text: '#991b1b' }
 };
 
-export default function LotCard({ lot, users = [], onClick }) {
+export default function LotCard({ lot, users = [] }) {
+  const navigate = useNavigate();
   const statusStyle = STATUS_COLORS[lot.status] || STATUS_COLORS['Open'];
   const hasViewers = users.length > 0;
 
   return (
     <div
       style={{ ...styles.card, ...(hasViewers ? styles.cardActive : {}) }}
-      onClick={() => onClick(lot)}
+      onClick={() => navigate(`/lot/${lot.id}`)}
     >
       <div style={styles.header}>
         <span style={styles.lotId}>Lot #{lot.id}</span>

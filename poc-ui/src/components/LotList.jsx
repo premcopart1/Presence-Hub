@@ -4,7 +4,7 @@ import { fetchLotsPresence } from '../hooks/usePresence';
 
 const PAGE_SIZE = 12;
 
-export default function LotList({ lots, presenceMap, onSelectLot }) {
+export default function LotList({ lots, presenceMap }) {
   const [page, setPage] = useState(1);
   const [initialPresence, setInitialPresence] = useState({});
 
@@ -51,7 +51,6 @@ export default function LotList({ lots, presenceMap, onSelectLot }) {
             key={lot.id}
             lot={lot}
             users={getUsers(lot.id)}
-            onClick={onSelectLot}
           />
         ))}
       </div>

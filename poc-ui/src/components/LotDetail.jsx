@@ -1,4 +1,5 @@
 import React from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import LotPresenceBanner from './LotPresenceBanner';
 
 const STATUS_COLORS = {
@@ -7,12 +8,18 @@ const STATUS_COLORS = {
   Closed: { bg: '#fee2e2', text: '#991b1b' }
 };
 
-export default function LotDetail({ lot, userEmail, presenceMap, onBack }) {
+export default function LotDetail({ lots, userEmail, presenceMap }) {
+  const { lotId } = useParams();
+  const navigate = useNavigate();
+  const lot = lots.find((l) => String(l.id) === lotId);
+
+  if (!lot) return <p style={{ padding: '24px' }}>Lot not found.</p>;
+
   const statusStyle = STATUS_COLORS[lot.status] || STATUS_COLORS['Open'];
 
   return (
     <div style={styles.container}>
-      <button style={styles.backBtn} onClick={onBack}>← Back to Lots</button>
+      <button style={styles.backBtn} onClick={() => navigate('/')}>← Back to Lots</button>
 
       <LotPresenceBanner
         lotId={String(lot.id)}
