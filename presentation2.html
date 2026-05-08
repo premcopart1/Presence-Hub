@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PresenceHub — Simple Overview</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css" />
+  <style>
+    :root {
+      --blue: #1e40af;
+      --lightblue: #eff6ff;
+      --green: #059669;
+      --yellow: #f59e0b;
+      --gray: #6b7280;
+      --dark: #111827;
+    }
+    .reveal { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+    .reveal h1 { color: var(--blue); font-size: 2em; }
+    .reveal h2 { color: var(--blue); font-size: 1.25em; border-bottom: 3px solid var(--yellow); padding-bottom: 4px; margin-bottom: 6px; }
+    .reveal h3 { color: var(--dark); font-size: 0.92em; }
+    .reveal p, .reveal li { color: #374151; font-size: 0.76em; line-height: 1.55; }
+    .reveal pre { font-size: 0.55em; background: #1e293b; border-radius: 8px; }
+    .reveal code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; color: #be185d; font-size: 0.9em; }
+
+    .tag { display: inline-block; padding: 4px 12px; border-radius: 999px; font-size: 0.7em; font-weight: 700; }
+    .tag-blue  { background: #dbeafe; color: #1e40af; }
+    .tag-green { background: #dcfce7; color: #166534; }
+    .tag-yellow{ background: #fef9c3; color: #854d0e; }
+    .tag-purple{ background: #ede9fe; color: #5b21b6; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+    .card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 10px 14px;
+      text-align: left;
+    }
+    .card h3 { margin-bottom: 4px; color: var(--blue); }
+    .card p, .card li { font-size: 0.68em; color: #4b5563; }
+
+    .highlight-box {
+      background: var(--lightblue);
+      border-left: 4px solid var(--blue);
+      border-radius: 6px;
+      padding: 8px 14px;
+      margin: 6px 0;
+      text-align: left;
+    }
+    .highlight-box p { font-size: 0.72em; margin: 0; color: #1e40af; }
+
+    .warn-box {
+      background: #fefce8;
+      border-left: 4px solid var(--yellow);
+      border-radius: 6px;
+      padding: 8px 14px;
+      margin: 6px 0;
+      text-align: left;
+    }
+    .warn-box p { font-size: 0.72em; margin: 0; color: #92400e; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 0.7em; }
+    th { background: var(--blue); color: #fff; padding: 8px 12px; text-align: left; }
+    td { padding: 7px 12px; border-bottom: 1px solid #e5e7eb; color: #374151; }
+    tr:nth-child(even) td { background: #f9fafb; }
+    .yes  { color: #059669; font-weight: 700; }
+    .no   { color: #dc2626; font-weight: 700; }
+    .win  { background: #dcfce7 !important; }
+
+    .flow-box {
+      background: #1e293b;
+      border-radius: 10px;
+      padding: 14px 20px;
+      font-family: monospace;
+      font-size: 0.58em;
+      color: #e2e8f0;
+      text-align: left;
+      white-space: pre;
+      line-height: 1.65;
+    }
+    .fc { color: #94a3b8; }   /* comment */
+    .fa { color: #86efac; }   /* action  */
+    .fw { color: #fbbf24; }   /* arrow   */
+    .fl { color: #7dd3fc; }   /* label   */
+
+    .step { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 7px; text-align: left; }
+    .step-num {
+      min-width: 22px; height: 22px; border-radius: 50%;
+      background: var(--blue); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.65em; font-weight: 700; flex-shrink: 0;
+    }
+    .step p { margin: 0; font-size: 0.71em; color: #374151; line-height: 1.4; }
+
+    .big-number { font-size: 1.8em; font-weight: 800; color: var(--blue); line-height: 1; }
+    .metric-label { font-size: 0.62em; color: var(--gray); margin-top: 2px; }
+    .env-key { font-family: monospace; font-size: 0.8em; color: #be185d; background: #fdf2f8; padding: 2px 6px; border-radius: 4px; }
+
+    .reveal section { padding: 8px 30px; }
+    .reveal .slides section { overflow-y: auto !important; max-height: 90vh; }
+  </style>
+</head>
+<body>
+<div class="reveal">
+  <div class="slides">
+
+    <!-- ───────────────────────────── SLIDE 1: Product + Tech Stack ───────────────────────────── -->
+    <section data-background-color="#1e40af">
+      <h1 style="color:#fff; font-size:2.2em; border:none; margin-bottom:4px;">PresenceHub</h1>
+      <p style="color:#bfdbfe; font-size:0.9em; margin-bottom:14px;">Real-time presence awareness for CSR workspaces</p>
+
+      <div class="grid-2" style="margin-bottom:14px;">
+        <div class="card" style="background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.2);">
+          <h3 style="color:#bfdbfe;">What it does</h3>
+          <ul>
+            <li style="color:#e0f2fe;">Tracks which users are viewing which lots — live</li>
+            <li style="color:#e0f2fe;">Shows a badge on the home page lot list</li>
+            <li style="color:#e0f2fe;">Shows an "Also viewing" banner on lot detail pages</li>
+            <li style="color:#e0f2fe;">Prevents duplicate work across CSR teams</li>
+            <li style="color:#e0f2fe;">Informational only — no locks, no restrictions</li>
+          </ul>
+        </div>
+        <div class="card" style="background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.2);">
+          <h3 style="color:#bfdbfe;">Why standalone</h3>
+          <ul>
+            <li style="color:#e0f2fe;">Fully decoupled from the Java backend</li>
+            <li style="color:#e0f2fe;">Node.js is purpose-built for real-time / event-driven workloads</li>
+            <li style="color:#e0f2fe;">Any UI app in the company can plug in</li>
+            <li style="color:#e0f2fe;">Swap bundled Redis for central DevOps Redis via one env change</li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+        <span class="tag tag-green">Node.js + Express</span>
+        <span class="tag tag-blue" style="background:#bfdbfe;">Server-Sent Events</span>
+        <span class="tag tag-yellow">Redis Pub/Sub</span>
+        <span class="tag tag-green">React</span>
+        <span class="tag tag-purple" style="background:#ede9fe; color:#5b21b6;">Docker</span>
+      </div>
+    </section>
+
+    <!-- ───────────────────────────── SLIDE 2: SSE vs WebSockets ───────────────────────────── -->
+    <section>
+      <h2>Why SSE — Not WebSockets</h2>
+
+      <table style="margin-top:8px;">
+        <thead>
+          <tr>
+            <th>Factor</th>
+            <th>SSE ✅</th>
+            <th>WebSockets</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="win"><td>Data direction</td><td class="yes">Server → Client only — exactly what we need</td><td>Bi-directional — capability we'd never use</td></tr>
+          <tr><td>Client actions (enter/leave)</td><td class="yes">Plain REST POST — simple and stateless</td><td>Would send over the socket — unnecessary complexity</td></tr>
+          <tr class="win"><td>Auto-reconnect</td><td class="yes">Built into EventSource — zero code needed</td><td>Manual — you write reconnect + backoff logic</td></tr>
+          <tr><td>Proxy / firewall risk</td><td class="yes">Plain HTTP — works in every enterprise network</td><td>Protocol upgrade (ws://) — can be blocked</td></tr>
+          <tr class="win"><td>Scaling with Redis</td><td class="yes">Clean — each instance holds its own SSE Set</td><td>Same pattern but adds protocol-level overhead</td></tr>
+          <tr><td>Debugging / logging</td><td class="yes">Text-based HTTP — readable in any tool</td><td>Binary framing — requires specialised tooling</td></tr>
+        </tbody>
+      </table>
+
+      <div class="highlight-box" style="margin-top:8px;">
+        <p>The only real trade-off with SSE: ungraceful exits (crash / network drop) rely on a heartbeat timeout. That's an acceptable trade-off for an <strong>informational-only</strong> indicator — no one is blocked from opening a lot.</p>
+      </div>
+    </section>
+
+    <!-- ───────────────────────────── SLIDE 3: How Enter Works ───────────────────────────── -->
+    <section>
+      <h2>How Enter Works</h2>
+      <p style="font-size:0.75em; color:var(--gray);">Triggered when a user opens a lot detail page — or returns to a backgrounded tab</p>
+
+      <div class="flow-box" style="margin-top:8px;">
+<span class="fl">User 1 (Tab)</span>        <span class="fl">PresenceHub Server</span>          <span class="fl">Redis</span>           <span class="fl">User 2 (Tab)</span>
+     |                        |                          |                    |
+     | <span class="fa">Opens Lot #1005</span>          |                          |                    |
+     | <span class="fc">component mounts</span>         |                          |                    |
+     |                        |                          |                    |
+     |--POST /presence/enter->|                          |                    |
+     |  { lotId, userEmail }  |                          |                    |
+     |                        |--HSET presence:lot:1005->|                    |
+     |                        |  { correlationId:        |                    |
+     |                        |    { userEmail,          |                    |
+     |                        |      lastSeen } }        |                    |
+     |                        |                          |                    |
+     |                        |--PUBLISH presence:updates|                    |
+     |                        |  { lotId: "1005",        |                    |
+     |                        |    users: [user1] }      |                    |
+     |                        |                          |                    |
+     |                        |<--Redis subscriber fires-|                    |
+     |                        |                          |                    |
+     |<--SSE presence_update--|----SSE presence_update----------------------->|
+     |                        |                          |   <span class="fa">Badge appears on Lot #1005</span>
+     |<--200 OK---------------|                          |                    |</div>
+
+      <div class="highlight-box" style="margin-top:8px;">
+        <p>The <code>correlationId</code> (one UUID per tab) is the Redis hash field key — so two tabs by the same user on the same lot are tracked independently.</p>
+      </div>
+    </section>
+
+    <!-- ───────────────────────────── SLIDE 4: How Leave Works ───────────────────────────── -->
+    <section>
+      <h2>How Leave Works</h2>
+      <p style="font-size:0.75em; color:var(--gray);">Triggered when a user navigates away from the lot detail page — component unmounts</p>
+
+      <div class="flow-box" style="margin-top:8px;">
+<span class="fl">User 1 (Tab)</span>        <span class="fl">PresenceHub Server</span>          <span class="fl">Redis</span>           <span class="fl">User 2 (Tab)</span>
+     |                        |                          |                    |
+     | <span class="fa">Clicks back / navigates</span>  |                          |                    |
+     | <span class="fc">component unmounts</span>        |                          |                    |
+     |                        |                          |                    |
+     |--POST /presence/leave->|                          |                    |
+     |  { lotId, userEmail }  |                          |                    |
+     |  X-Correlation-ID hdr  |                          |                    |
+     |                        |--HDEL presence:lot:1005->|                    |
+     |                        |  <span class="fc">(removes this tab's entry)</span> |                    |
+     |                        |                          |                    |
+     |                        |--PUBLISH presence:updates|                    |
+     |                        |  { lotId: "1005",        |                    |
+     |                        |    users: [] }           |                    |
+     |                        |                          |                    |
+     |                        |<--Redis subscriber fires-|                    |
+     |                        |                          |                    |
+     |<--SSE presence_update--|----SSE presence_update----------------------->|
+     |                        |                          |   <span class="fa">Badge removed — near-zero delay</span></div>
+
+      <div class="highlight-box" style="margin-top:8px;">
+        <p>The <code>X-Correlation-ID</code> header is sent by the React hook on every REST call — the server uses it to find and delete exactly the right Redis entry.</p>
+      </div>
+    </section>
+
+    <!-- ───────────────────────────── SLIDE 5: How Tab Close Works ───────────────────────────── -->
+    <section>
+      <h2>How Tab Close Works</h2>
+      <p style="font-size:0.75em; color:var(--gray);">When the browser closes the tab, all HTTP connections — including the SSE stream — are terminated</p>
+
+      <div class="flow-box" style="margin-top:8px;">
+<span class="fl">User 1 (Tab)</span>        <span class="fl">PresenceHub Server</span>          <span class="fl">Redis</span>           <span class="fl">User 2 (Tab)</span>
+     |                        |                          |                    |
+     | <span class="fa">User closes tab</span>          |                          |                    |
+     | <span class="fc">browser terminates all</span>   |                          |                    |
+     | <span class="fc">HTTP connections</span>          |                          |                    |
+     |                        |                          |                    |
+     | ~~~SSE connection closed~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     |                        |                          |                    |
+     |               <span class="fa">req.on('close') fires</span>              |                    |
+     |               <span class="fa">leaveByCorrelationId()</span>             |                    |
+     |                        |                          |                    |
+     |                        |--KEYS presence:lot:*---->|                    |
+     |                        |--HGET lot:1005---------->|                    |
+     |                        |  <span class="fc">correlationId found?</span>      |                    |
+     |                        |  <span class="fa">YES</span>                       |                    |
+     |                        |--HDEL lot:1005---------->|                    |
+     |                        |--PUBLISH presence:updates|                    |
+     |                        |  { lotId, users: [] }   |                    |
+     |                        |                          |                    |
+     |                        |<--Redis subscriber fires-|                    |
+     |                        |                          |                    |
+     |                        |----SSE presence_update----------------------->|
+     |                        |                          |   <span class="fa">Badge removed — near-zero delay</span></div>
+
+      <div class="highlight-box" style="margin-top:10px;">
+        <p>The SSE disconnect is always reliable — driven entirely by the server. No <code>sendBeacon</code>, no CORS preflight, no browser timing issues.</p>
+      </div>
+    </section>
+
+    <!-- ───────────────────────────── SLIDE 6: Inactive Tab + Timings ───────────────────────────── -->
+    <section>
+      <h2>Inactive Tab — How It Works &amp; Timings</h2>
+
+      <div class="grid-2" style="margin-top:14px; gap:16px;">
+        <div>
+          <div class="card" style="margin-bottom:12px;">
+            <h3>Page Visibility API</h3>
+            <p>When the user switches away from the tab, <code>visibilitychange</code> fires. The heartbeat timer is <strong>paused</strong>. When they return, <code>POST /enter</code> re-registers them immediately and the heartbeat restarts.</p>
+          </div>
+          <div class="card">
+            <h3>Stale Cleanup Job</h3>
+            <p>A background job scans all Redis presence keys every <strong>5 minutes</strong>. Any entry whose <code>lastSeen</code> is older than <strong>15 minutes</strong> is deleted and a <code>presence_update</code> is published.</p>
+          </div>
+        </div>
+
+        <div>
+          <div class="grid-3" style="margin-bottom:14px;">
+            <div class="card" style="text-align:center; padding:12px;">
+              <div class="big-number">3m</div>
+              <div class="metric-label">Heartbeat interval<br/>(tab visible only)</div>
+              <div class="env-key" style="display:block; margin-top:6px;">HEARTBEAT_INTERVAL_MS</div>
+            </div>
+            <div class="card" style="text-align:center; padding:12px;">
+              <div class="big-number">15m</div>
+              <div class="metric-label">Stale timeout<br/>(no heartbeat = gone)</div>
+              <div class="env-key" style="display:block; margin-top:6px;">STALE_TIMEOUT_MS</div>
+            </div>
+            <div class="card" style="text-align:center; padding:12px;">
+              <div class="big-number">5m</div>
+              <div class="metric-label">Cleanup job interval</div>
+              <div class="env-key" style="display:block; margin-top:6px;">CLEANUP_INTERVAL_MS</div>
+            </div>
+          </div>
+
+          <table style="font-size:0.66em;">
+            <thead><tr><th>Scenario</th><th>Delay</th></tr></thead>
+            <tbody>
+              <tr><td>Navigate away</td><td class="yes">Near zero</td></tr>
+              <tr><td>Tab close</td><td class="yes">Near zero (SSE disconnect)</td></tr>
+              <tr><td>Tab backgrounded</td><td>Up to 15 min</td></tr>
+              <tr><td>Tab crash / network drop</td><td>Up to 15 min</td></tr>
+              <tr><td>User returns to tab</td><td class="yes">Immediate</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="warn-box" style="margin-top:8px;">
+        <p>Rule of thumb: <strong>stale timeout ≈ 5× heartbeat interval</strong> — gives enough buffer for missed heartbeats due to slow networks or timer drift. All three values are env vars — change them in <code>docker-compose.yml</code> without touching code.</p>
+      </div>
+    </section>
+
+    <!-- ───────────────────────────── SLIDE 7: Summary ───────────────────────────── -->
+    <section data-background-color="#1e40af">
+      <h2 style="color:#fff; border-color:#f59e0b;">Summary</h2>
+
+      <div class="grid-2" style="margin-top:18px; gap:16px;">
+        <div class="card" style="background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.2);">
+          <h3 style="color:#bfdbfe; margin-bottom:10px;">The Four Scenarios</h3>
+          <div class="step">
+            <div class="step-num" style="background:#f59e0b; color:#1e293b;">1</div>
+            <p style="color:#e0f2fe;"><strong style="color:#fff;">Enter</strong> — component mounts, POST /enter → Redis HSET → publish → all SSE clients update</p>
+          </div>
+          <div class="step">
+            <div class="step-num" style="background:#f59e0b; color:#1e293b;">2</div>
+            <p style="color:#e0f2fe;"><strong style="color:#fff;">Leave</strong> — component unmounts, POST /leave → Redis HDEL → publish → all SSE clients update</p>
+          </div>
+          <div class="step">
+            <div class="step-num" style="background:#f59e0b; color:#1e293b;">3</div>
+            <p style="color:#e0f2fe;"><strong style="color:#fff;">Tab close</strong> — SSE connection drops → server detects, scans Redis by correlationId, removes, publishes</p>
+          </div>
+          <div class="step">
+            <div class="step-num" style="background:#f59e0b; color:#1e293b;">4</div>
+            <p style="color:#e0f2fe;"><strong style="color:#fff;">Inactive tab</strong> — heartbeat pauses, stale cleanup removes entry after 15 min of no activity</p>
+          </div>
+        </div>
+
+        <div class="card" style="background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.2);">
+          <h3 style="color:#bfdbfe; margin-bottom:10px;">Key Design Decisions</h3>
+          <ul>
+            <li style="color:#e0f2fe;">SSE over WebSockets — presence is one-way, HTTP works everywhere</li>
+            <li style="color:#e0f2fe;">REST for client actions — stateless, simple, no bi-directional socket needed</li>
+            <li style="color:#e0f2fe;">SSE disconnect drives tab-close leave — no reliance on browser beacon APIs</li>
+            <li style="color:#e0f2fe;">Page Visibility API — stops heartbeat on background tab, no ghost presence</li>
+            <li style="color:#e0f2fe;">Redis pub/sub — works across multiple server instances out of the box</li>
+            <li style="color:#e0f2fe;">correlationId per tab — tracks each tab independently, full traceability</li>
+            <li style="color:#e0f2fe;">All timings are env vars — tune without code changes</li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="margin-top:18px; text-align:center;">
+        <span class="tag tag-green">Node.js + Express</span>&nbsp;
+        <span class="tag tag-blue" style="background:#bfdbfe;">SSE</span>&nbsp;
+        <span class="tag tag-yellow">Redis</span>&nbsp;
+        <span class="tag tag-green">React</span>&nbsp;
+        <span class="tag tag-purple" style="background:#ede9fe; color:#5b21b6;">Docker</span>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    slideNumber: 'c/t',
+    transition: 'slide',
+    transitionSpeed: 'fast',
+    controls: true,
+    progress: true,
+    center: false,
+    width: 1100,
+    height: 700,
+    margin: 0.04,
+    scrollActivationWidth: null,
+    overflow: 'scroll',
+  });
+</script>
+</body>
+</html>
