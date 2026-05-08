@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { subscriber, PRESENCE_CHANNEL, getLotsPresence } = require('../redis/client');
+const { subscriber, PRESENCE_CHANNEL, getLotsPresence, leaveByCorrelationId } = require('../redis/client');
 const logger = require('../utils/logger');
 
 // Track all active SSE clients
@@ -29,7 +29,7 @@ subscriber.on('message', (channel, message) => {
 
 // GET /presence/stream
 router.get('/stream', async (req, res) => {
-  const correlationId = req.headers['x-correlation-id'] || 'unknown';
+  const correlationId = req.headers['x-correlation-id'] || req.query.correlationId || 'unknown';
 
   // SSE headers
   res.setHeader('Content-Type', 'text/event-stream');
@@ -52,10 +52,13 @@ router.get('/stream', async (req, res) => {
   }, 30000);
 
   // Cleanup on disconnect
-  req.on('close', () => {
+  req.on('close', async () => {
     clearInterval(keepAlive);
     clients.delete(client);
     logger.info('SSE client disconnected', { clientId, correlationId });
+    if (correlationId !== 'unknown') {
+      await leaveByCorrelationId(correlationId);
+    }
   });
 });
 

@@ -105,12 +105,28 @@ async function cleanupStaleSessions() {
   if (cleaned > 0) logger.info(`Cleanup complete`, { sessionsRemoved: cleaned });
 }
 
+// Remove all lot entries for a correlationId — called on SSE disconnect
+async function leaveByCorrelationId(correlationId) {
+  const keys = await redis.keys('presence:lot:*');
+  for (const key of keys) {
+    const raw = await redis.hget(key, correlationId);
+    if (!raw) continue;
+    const entry = JSON.parse(raw);
+    await redis.hdel(key, correlationId);
+    const lotId = key.replace('presence:lot:', '');
+    const users = await getLotUsers(lotId);
+    await redis.publish(PRESENCE_CHANNEL, JSON.stringify({ lotId, users }));
+    logger.info('User left lot via SSE disconnect', { userEmail: entry.userEmail, lotId, correlationId });
+  }
+}
+
 module.exports = {
   redis,
   subscriber,
   PRESENCE_CHANNEL,
   enterLot,
   leaveLot,
+  leaveByCorrelationId,
   heartbeat,
   getLotUsers,
   getLotsPresence,

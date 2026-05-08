@@ -26,15 +26,6 @@ async function postPresence(endpoint, body) {
   }
 }
 
-function sendBeaconLeave(lotId, userEmail) {
-  const url = `${PRESENCE_URL}/presence/leave`;
-  const data = JSON.stringify({ lotId, userEmail, correlationId: CORRELATION_ID });
-  if (navigator.sendBeacon) {
-    const blob = new Blob([data], { type: 'application/json' });
-    navigator.sendBeacon(url, blob);
-  }
-}
-
 /**
  * usePresence — call this on a lot detail page
  * @param {string} lotId - the lot being viewed
@@ -74,21 +65,13 @@ export function usePresence(lotId, userEmail) {
       }
     }
 
-    // Best-effort leave on tab/browser close
-    function handleBeforeUnload() {
-      stopHeartbeat();
-      sendBeaconLeave(lotId, userEmail);
-    }
-
     document.addEventListener('visibilitychange', handleVisibilityChange);
-    window.addEventListener('beforeunload', handleBeforeUnload);
 
     return () => {
       // Graceful leave on component unmount (navigation)
       stopHeartbeat();
       postPresence('leave', { lotId, userEmail });
       document.removeEventListener('visibilitychange', handleVisibilityChange);
-      window.removeEventListener('beforeunload', handleBeforeUnload);
     };
   }, [lotId, userEmail, startHeartbeat, stopHeartbeat]);
 }
@@ -99,7 +82,7 @@ export function usePresence(lotId, userEmail) {
  * @param {function} onUpdate - called with { lotId, users } on each presence_update event
  */
 export function createSSEConnection(onUpdate) {
-  const url = `${PRESENCE_URL}/presence/stream`;
+  const url = `${PRESENCE_URL}/presence/stream?correlationId=${CORRELATION_ID}`;
   const es = new EventSource(url);
 
   es.addEventListener('presence_update', (e) => {
