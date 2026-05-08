@@ -4,7 +4,7 @@ const { enterLot, leaveLot, heartbeat, getLotUsers, getLotsPresence } = require(
 const logger = require('../utils/logger');
 
 function getCorrelationId(req) {
-  return req.headers['x-correlation-id'] || 'unknown';
+  return req.headers['x-correlation-id'] || req.body?.correlationId || 'unknown';
 }
 
 // POST /presence/enter

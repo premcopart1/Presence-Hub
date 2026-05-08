@@ -28,7 +28,7 @@ async function postPresence(endpoint, body) {
 
 function sendBeaconLeave(lotId, userEmail) {
   const url = `${PRESENCE_URL}/presence/leave`;
-  const data = JSON.stringify({ lotId, userEmail });
+  const data = JSON.stringify({ lotId, userEmail, correlationId: CORRELATION_ID });
   if (navigator.sendBeacon) {
     const blob = new Blob([data], { type: 'application/json' });
     navigator.sendBeacon(url, blob);
